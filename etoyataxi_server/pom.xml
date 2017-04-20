@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+    </dependencies>
+
+    <parent>
+        <groupId>com.ostdlabs.etoyataxi</groupId>
+        <artifactId>etoyataxi_api</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>etoyataxi_server</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>etoyataxi_server_rest</module>
+        <module>etoyataxi_server_rest_lib</module>
+        <module>etoyataxi_server_service</module>
+        <module>etoyataxi_server_domain</module>
+        <module>etoyataxi_server_providers_base</module>
+        <module>etoyataxi_server_providers_rbt</module>
+        <module>etoyataxi_server_providers_mango</module>
+    </modules>
+
+    
+</project>

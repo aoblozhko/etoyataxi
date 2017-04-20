@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ostdlabs.etoyataxi</groupId>
+        <artifactId>etoyataxi_server</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>etoyataxi_server_rest_lib</artifactId>
+    <version>0.0.1</version>
+    <packaging>war</packaging>
+
+    <description>This is ugly solution to aggregate all libs in one place easily</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ostdlabs.etoyataxi</groupId>
+            <artifactId>etoyataxi_api_rest</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <packagingExcludes>WEB-INF/lib/etoyataxi_api*.jar</packagingExcludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>package_libs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                       <groupId>org.apache.maven.plugins</groupId>
+                       <artifactId>maven-dependency-plugin</artifactId>
+                       <executions>
+                           <execution>
+                              <id>copy-dependencies</id>
+                              <phase>initialize</phase>
+                              <goals>
+                                 <goal>copy-dependencies</goal>
+                              </goals>
+                              <configuration>
+                                 <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                 <excludeArtifactIds>etoyataxi_server_domain,etoyataxi_server_rest,etoyataxi_server_service</excludeArtifactIds>
+                                 <overWriteReleases>true</overWriteReleases>
+                                 <overWriteSnapshots>true</overWriteSnapshots>
+                                 <overWriteIfNewer>true</overWriteIfNewer>
+                              </configuration>
+                           </execution>
+                       </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

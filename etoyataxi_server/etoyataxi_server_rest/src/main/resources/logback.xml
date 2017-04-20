@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+<!--        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+<!--
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/var/log/ostdlabs/etoyataxi/scheduler.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/var/log/ostdlabs/etoyataxi/scheduler.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.JaninoEventEvaluator">
+                <expression>
+                    if(mdc == null || mdc.get("type") == null)
+                    return false;
+
+                    String type = (String) mdc.get("type");
+
+                    return type.equals("scheduler");
+                </expression>
+            </evaluator>
+            <OnMatch>ACCEPT</OnMatch>
+            <OnMismatch>DENY</OnMismatch>
+        </filter>
+
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{name}] [%X{user}] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+-->
+
+    <logger name="org.apache.cxf.endpoint.dynamic" level="WARN">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- for testing
+    <logger name="com.ostdlabs.smava.scorecompass.api.service.CrontabService" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.ostdlabs.smava.scorecompass.api.service.optivo.AbstractOptivoService" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+     <logger name="com.ostdlabs.smava.scorecompass.api.service.PostalVerificationService" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    -->
+
+    <logger name="com.ostdlabs.etoyataxi" level="DEBUG">
+        <appender-ref ref="dailyRollingFileAppender" />
+    </logger>
+
+    <!-- Strictly speaking, the level attribute is not necessary since -->
+    <!-- the level of the root level is set to DEBUG by default.       -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <jmxConfigurator />
+</configuration>
