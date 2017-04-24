@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -28,8 +27,7 @@ public class ProviderData implements Serializable {
     @ManyToOne
     private Provider provider;
 
-    @Lob
-    @Type(type="org.hibernate.type.StringClobType")
+    @Type(type = "ProviderDataJsonType")
     private String data;
 
     public long getId() {

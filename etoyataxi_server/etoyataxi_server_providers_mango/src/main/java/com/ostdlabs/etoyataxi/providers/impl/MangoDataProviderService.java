@@ -9,7 +9,7 @@ import com.ostdlabs.etoyataxi.domain.ProviderRepository;
 import com.ostdlabs.etoyataxi.domain.ProviderSettingRepository;
 import com.ostdlabs.etoyataxi.providers.DataProviderService;
 import com.ostdlabs.etoyataxi.providers.IDataProviderService;
-import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatRequest;
+
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatRequestJson;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponse;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponseMessage;
@@ -30,6 +30,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -179,6 +180,22 @@ public class MangoDataProviderService extends DataProviderService implements IDa
         ResponseEntity<MangoStatResponseMessage> response = restTemplate.postForEntity("{baseUrl}stats/result", request , MangoStatResponseMessage.class, requestParameters);
 
         return response;
+    }
+
+
+    public Map<String, Object> unserializeDataField(String dataString) {
+        MangoStatResponseMessage resultData = null;
+        Map<String, Object> unserialized = new HashMap<>();
+
+        try {
+            resultData = getJsonMapper().readValue(dataString, MangoStatResponseMessage.class);
+        } catch (IOException e) {
+            log.error("Error userializing data field", e);
+        }
+        if (resultData != null) {
+            unserialized.put("entries", resultData.getEntries());
+        }
+        return unserialized;
     }
 
     private ObjectMapper getJsonMapper() {

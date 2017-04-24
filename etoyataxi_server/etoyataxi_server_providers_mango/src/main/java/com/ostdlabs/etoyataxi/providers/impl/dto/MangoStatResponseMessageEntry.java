@@ -27,6 +27,9 @@ public class MangoStatResponseMessageEntry {
     @JsonProperty("disconnect_reason")
     private String disconnectReason;
 
+    public MangoStatResponseMessageEntry() {
+    }
+
     public MangoStatResponseMessageEntry(String[] values) {
         this.records = values[0];
         this.start = values[1];

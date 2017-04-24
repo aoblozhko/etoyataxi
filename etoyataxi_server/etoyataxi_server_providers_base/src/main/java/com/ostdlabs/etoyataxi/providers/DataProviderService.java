@@ -1,6 +1,7 @@
 package com.ostdlabs.etoyataxi.providers;
 
 
+import com.ostdlabs.etoyataxi.domain.ProviderData;
 import com.ostdlabs.etoyataxi.domain.ProviderRepository;
 import com.ostdlabs.etoyataxi.domain.ProviderSetting;
 import com.ostdlabs.etoyataxi.domain.ProviderSettingRepository;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,10 @@ public class DataProviderService implements IDataProviderService {
 
     @Override
     public Map<Long, String> fetchData() {
+        return null;
+    }
+
+    public Map<String, Object> unserializeDataField(String dataString) {
         return null;
     }
 

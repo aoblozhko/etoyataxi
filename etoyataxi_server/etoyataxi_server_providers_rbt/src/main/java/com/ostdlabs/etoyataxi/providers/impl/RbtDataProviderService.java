@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ostdlabs.etoyataxi.domain.Provider;
 import com.ostdlabs.etoyataxi.domain.ProviderRepository;
 import com.ostdlabs.etoyataxi.domain.ProviderSettingRepository;
+import com.ostdlabs.etoyataxi.dto.ProviderDataJson;
 import com.ostdlabs.etoyataxi.providers.DataProviderService;
 import com.ostdlabs.etoyataxi.providers.IDataProviderService;
 import com.ostdlabs.etoyataxi.providers.impl.dto.RbtStatResponse;
@@ -24,6 +25,7 @@ import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +77,7 @@ public class RbtDataProviderService extends DataProviderService implements IData
         Map<String, String> requestParameters = new HashMap<>();
         requestParameters.put("baseUrl", providerSettings.get("baseUrl"));
         requestParameters.put("key", providerSettings.get("key"));
-        requestParameters.put("format", providerSettings.get("table"));
+        requestParameters.put("format", "table");
         String dateFrom = DateTime.now().toString(DATE_FROM_PATTERN);
         if (provider.getLastUpdate() != null) {
             dateFrom = provider.getLastUpdate().toString(DATE_FROM_PATTERN);
@@ -86,23 +88,55 @@ public class RbtDataProviderService extends DataProviderService implements IData
                 RbtStatResponse.class, requestParameters);
 
         Map<Long, String> extractedData = new HashMap<>();
-
-        for (RbtStatResponseRow row : result.getRows()) {
-            if (row.col != null) {
-                Long millis = DateTime.parse(row.col[0]).getMillis();
-                extractedData.put(millis, formatResultDataRow(row));
+        if (result.getRows() != null) {
+            for (RbtStatResponseRow row : result.getRows()) {
+                if (row.col != null) {
+                    Long millis = DateTime.parse(row.col[0]).getMillis();
+                    extractedData.put(millis, formatResultDataRow(row));
+                }
             }
         }
 
         return extractedData;
     }
 
+    public Map<String, Object> unserializeDataField(String dataString) {
+        RbtStatResultData resultData = null;
+        Map<String, Object> unserialized = new HashMap<>();
+
+        try {
+            resultData = getJsonMapper().readValue(dataString, RbtStatResultData.class);
+        } catch (IOException e) {
+            log.error("Error userializing data field", e);
+        }
+        if (resultData != null) {
+            unserialized.put("date", resultData.getDate());
+            unserialized.put("count", resultData.getCount());
+            unserialized.put("done", resultData.getDone());
+            unserialized.put("sms", resultData.getSms());
+            unserialized.put("abuse", resultData.getAbuse());
+        }
+        return unserialized;
+    }
+
     private String formatResultDataRow(RbtStatResponseRow row) {
         RbtStatResultData resultData = new RbtStatResultData(row.col);
+        ProviderDataJson providerDataJson = new ProviderDataJson();
+        List<Map<String, Object>> entries = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        data.put("date", row.col[0]);
+        data.put("count", row.col[1]);
+        data.put("done", row.col[2]);
+        data.put("sms", row.col[3]);
+        data.put("avg", row.col[4]);
+        data.put("sum", row.col[5]);
+        data.put("abuse", row.col[6]);
+        entries.add(data);
+        providerDataJson.setEntries(entries);
         try {
-            return getJsonMapper().writeValueAsString(resultData);
+            return getJsonMapper().writeValueAsString(providerDataJson);
         } catch (JsonProcessingException e) {
-            log.error("error serilzing rtb provider data", e);
+            log.error("error serializing rtb provider data", e);
         }
         return null;
     }

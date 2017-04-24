@@ -21,6 +21,9 @@ public class RbtStatResultData {
 
     private int abuse;
 
+    public RbtStatResultData() {
+    }
+
     public RbtStatResultData(String[] data) {
         this.date = DateTime.parse(data[0]);
         this.count = Integer.parseInt(data[1]);

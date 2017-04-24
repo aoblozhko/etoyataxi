@@ -354,27 +354,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.webcohesion.enunciate</groupId>
-                <artifactId>enunciate-maven-plugin</artifactId>
-                <version>2.3.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>docs</goal>
-                        </goals>
-                        <configuration>
-                            <!-- the directory where to put the docs -->
-                            <docsDir>${project.build.directory}/docs</docsDir>
-                            <excludes>
-                                <exclude>
-                                    com.ostdlabs.etoyataxi.api.big.client.*
-                                </exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>

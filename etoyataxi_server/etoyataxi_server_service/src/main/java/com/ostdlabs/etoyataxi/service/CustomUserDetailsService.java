@@ -26,7 +26,9 @@ import javax.inject.Inject;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Inject UserRepository userRepository;
+
     @Inject RoleRepository roleRepository;
+
     @Inject ApplicationContext applicationContext;
 
     @Override
