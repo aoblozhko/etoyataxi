@@ -1,11 +1,21 @@
 package com.ostdlabs.etoyataxi;
 
-import org.hamcrest.MatcherAssert;
-import org.joda.time.DateTime;
+import com.ostdlabs.etoyataxi.dto.EtoYaTaxiAuthResponse;
+import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponse;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import static com.ostdlabs.etoyataxi.Main.main;
 
 /*
 import static org.hamcrest.Matchers.equalTo;
@@ -16,44 +26,23 @@ import static org.hamcrest.Matchers.is;
 @ContextConfiguration(locations = "classpath:serviceContext-test.xml")
 public class AuthenticationServiceTest {
 
-/*    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
-    private AuthenticationTokenProcessingService authenticationTokenProcessingService;
-
-    @Autowired
-    private TokenUtils tokenUtils;
-
-        @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    RestTemplate restTemplate = new RestTemplate();
 
     @Test
-    public void testTokenOfUser() throws Exception {
-        User result = new User();
-        result.setCreationDate(DateTime.now());
-        result.setLastName("MADER");
-        result.setFirstName("RAINER");
-        result.setBirthDate(new DateTime(1966, 12, 6, 0, 0));
-        result.setZipCode("06116");
-        result.setCity("HALLE");
-        result.setStreet("REIDEBURGER STR");
-        result.setHouse("41");
-        result.setEmail("test@ostdlabs.com");
-        result.setGender(Gender.FEMALE);
-        result.setPassword(passwordEncoder.encode("test"));
-        result = userRepository.save(result);
+    public void testToken() throws Exception {
 
-        String token = tokenUtils.createToken(result);
-        User rez = authenticationTokenProcessingService.getUserByAuthToken(token);
-        MatcherAssert.assertThat(rez.getId(), equalTo(result.getId()));
+        main(new String[] {});
 
-        String expires = String.valueOf(new DateTime().minusMinutes(1).getMillis());
-        token = tokenUtils.createToken(result,expires);
-        MatcherAssert.assertThat(tokenUtils.validateToken(token,result), is(false));
-    }*/
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        //map.add("vpbx_api_key", providerSettings.get("vpbx_api_key"));
+
+        ResponseEntity<EtoYaTaxiAuthResponse> statRequest = restTemplate.postForEntity("http://localhost:8083/services/auth/token",
+                request, EtoYaTaxiAuthResponse.class);
+        //MatcherAssert.assertThat(tokenUtils.validateToken(token,result), is(false));
+    }
 
 }

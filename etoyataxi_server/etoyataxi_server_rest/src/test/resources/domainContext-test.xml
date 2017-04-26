@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <jpa:repositories base-package="com.ostdlabs.smava.scorecompass.api.domain.repositories" query-lookup-strategy="use-declared-query"
+    <jpa:repositories base-package="com.ostdlabs.etoyataxi.domain" query-lookup-strategy="use-declared-query"
                       repository-impl-postfix="CustomImpl">
 
     </jpa:repositories>

@@ -41,10 +41,14 @@
         <!--internal dependencies-->
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
+            <artifactId>etoyataxi_server_domain</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_service</artifactId>
             <version>0.0.1</version>
         </dependency>
-
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_providers_rbt</artifactId>

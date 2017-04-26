@@ -34,11 +34,12 @@ public class RbtStatResultData {
         this.abuse = Integer.parseInt(data[6]);
     }
 
-    public RbtStatResultData(DateTime date, int count, int done, BigDecimal sms, BigDecimal sum, int abuse) {
+    public RbtStatResultData(DateTime date, int count, int done, BigDecimal sms, BigDecimal avg, BigDecimal sum, int abuse) {
         this.date = date;
         this.count = count;
         this.done = done;
         this.sms = sms;
+        this.avg = avg;
         this.sum = sum;
         this.abuse = abuse;
     }
@@ -89,5 +90,13 @@ public class RbtStatResultData {
 
     public void setAbuse(int abuse) {
         this.abuse = abuse;
+    }
+
+    public BigDecimal getAvg() {
+        return avg;
+    }
+
+    public void setAvg(BigDecimal avg) {
+        this.avg = avg;
     }
 }

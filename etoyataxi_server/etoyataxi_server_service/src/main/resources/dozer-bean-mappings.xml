@@ -5,29 +5,9 @@
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
     <configuration>
-        <custom-converters>
-            <converter type="com.ostdlabs.smava.scorecompass.api.service.dozer.DateTimeCustomConverter">
-                <class-a>org.joda.time.DateTime</class-a>
-                <class-b>org.joda.time.DateTime</class-b>
-            </converter>
-        </custom-converters>
     </configuration>
 
     <mapping>
-        <class-a>com.ostdlabs.smava.scorecompass.api.domain.entities.User</class-a>
-        <class-b>com.ostdlabs.smava.scorecompass.api.service.dto.UserTO</class-b>
-        <field type="one-way">
-            <a>postalValidation.addressValidated</a>
-            <b>addressValidated</b>
-        </field>
-        <field type="one-way">
-            <a>tan.verificationDate</a>
-            <b>tanVerified</b>
-        </field>
-        <field type="one-way">
-            <a>tan.phone</a>
-            <b>phone</b>
-        </field>
     </mapping>
 
 </mappings>

@@ -2,7 +2,7 @@
          xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <display-name>scorecompass web application</display-name>
+    <display-name>etoyataxi web application</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -39,10 +39,6 @@
         <init-param>
             <param-name>jersey.config.feature.Trace</param-name>
             <param-value>true</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>com.ostdlabs.smava.scorecompass.api.filter.CacheControlFilter</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>

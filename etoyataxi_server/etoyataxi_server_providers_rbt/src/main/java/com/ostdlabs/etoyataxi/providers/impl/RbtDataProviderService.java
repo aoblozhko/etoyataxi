@@ -114,6 +114,8 @@ public class RbtDataProviderService extends DataProviderService implements IData
             unserialized.put("count", resultData.getCount());
             unserialized.put("done", resultData.getDone());
             unserialized.put("sms", resultData.getSms());
+            unserialized.put("avg", resultData.getAvg());
+            unserialized.put("sum", resultData.getSum());
             unserialized.put("abuse", resultData.getAbuse());
         }
         return unserialized;

@@ -1,4 +1,4 @@
-package com.ostdlabs.etoyataxi.providers.impl;
+package com.ostdlabs.etoyataxi.providers.impl.restclient;
 
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponseMessage;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponseMessageEntry;

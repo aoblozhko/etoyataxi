@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import java.io.Serializable;
 
@@ -30,6 +31,8 @@ public class Provider implements Serializable {
 
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastUpdate;
+
+    private Long checkInterval;
 
     public long getId() {
         return id;
@@ -69,5 +72,21 @@ public class Provider implements Serializable {
 
     public void setLastUpdate(DateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public long getCheckInterval() {
+        return checkInterval;
+    }
+
+    public void setCheckInterval(long checkInterval) {
+        this.checkInterval = checkInterval;
     }
 }

@@ -5,40 +5,50 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.ostdlabs.etoyataxi.domain.Provider;
+import com.ostdlabs.etoyataxi.domain.ProviderDataMangoCallRecord;
+import com.ostdlabs.etoyataxi.domain.ProviderDataMangoCallRecordRepository;
 import com.ostdlabs.etoyataxi.domain.ProviderRepository;
 import com.ostdlabs.etoyataxi.domain.ProviderSettingRepository;
 import com.ostdlabs.etoyataxi.providers.DataProviderService;
 import com.ostdlabs.etoyataxi.providers.IDataProviderService;
 
+import com.ostdlabs.etoyataxi.providers.impl.dto.MangoCallRecordRequestJson;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatRequestJson;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponse;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponseMessage;
+import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResponseMessageEntry;
 import com.ostdlabs.etoyataxi.providers.impl.dto.MangoStatResultRequestJson;
+import com.ostdlabs.etoyataxi.providers.impl.restclient.MangoStatMessageConverter;
 
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 
 @Service
@@ -55,8 +65,15 @@ public class MangoDataProviderService extends DataProviderService implements IDa
 
     private Provider provider = null;
 
-    public MangoDataProviderService(ProviderRepository providerRepository, ProviderSettingRepository providerSettingRepository) {
+    private ProviderDataMangoCallRecordRepository providerDataMangoCallRepository;
+
+    private TaskScheduler scheduler = new ConcurrentTaskScheduler();
+
+    @Inject
+    public MangoDataProviderService(ProviderRepository providerRepository, ProviderSettingRepository providerSettingRepository,
+                                    ProviderDataMangoCallRecordRepository providerDataMangoCallRepository) {
         super(providerRepository, providerSettingRepository);
+        this.providerDataMangoCallRepository = providerDataMangoCallRepository;
     }
 
     @PostConstruct
@@ -98,6 +115,7 @@ public class MangoDataProviderService extends DataProviderService implements IDa
     }
 
     private ResponseEntity<MangoStatResponse> requestStat() {
+
         Map<String, String> requestParameters = new HashMap<>();
         requestParameters.put("baseUrl", providerSettings.get("baseUrl"));
 
@@ -179,11 +197,84 @@ public class MangoDataProviderService extends DataProviderService implements IDa
 
         ResponseEntity<MangoStatResponseMessage> response = restTemplate.postForEntity("{baseUrl}stats/result", request , MangoStatResponseMessage.class, requestParameters);
 
+        List<MangoStatResponseMessageEntry> entries = response.getBody().getEntries();
+
+        checkAndDownloadRecords(entries);
+
         return response;
     }
 
+    public void checkAndDownloadRecords(List<MangoStatResponseMessageEntry> entries) {
+
+        for (MangoStatResponseMessageEntry entry : entries) {
+            List<String> records = entry.getRecords();
+            for (String recordId : records) {
+                ProviderDataMangoCallRecord record = providerDataMangoCallRepository.findFirstByRecordId(recordId);
+                if (record == null) {
+                    scheduler.schedule(new Runnable() {
+                        @Override
+                        public void run() {
+                            fetchRecord(recordId);
+                        }
+                    }, DateTime.now().plusSeconds(5).toDate());
+                }
+            }
+        }
+    }
+
+    public void fetchRecord(String recordId) {
+
+        Map<String, String> requestParameters = new HashMap<>();
+        requestParameters.put("baseUrl", providerSettings.get("baseUrl"));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> requestBodyMap = new LinkedMultiValueMap<>();
+        requestBodyMap.add("vpbx_api_key", providerSettings.get("vpbx_api_key"));
+
+        MangoCallRecordRequestJson recordRequestJson = new MangoCallRecordRequestJson(recordId);
+
+        String resultJsonString = "";
+        try {
+            resultJsonString = getJsonMapper().writeValueAsString(recordRequestJson);
+        } catch (JsonProcessingException e) {
+            log.error("error serializing mango provider record request params", e);
+        }
+        requestBodyMap.add("json", resultJsonString);
+
+        String sign = getSign(providerSettings.get("vpbx_api_key") + resultJsonString + providerSettings.get("sign"));
+
+        requestBodyMap.add("sign", sign);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestBodyMap, headers);
+
+        ResponseEntity<MangoStatResponseMessage> linkResponse = restTemplate.postForEntity("{baseUrl}/vpbx/queries/recording/post", request , MangoStatResponseMessage.class, requestParameters);
+        String location = linkResponse.getHeaders().getFirst("Location");
+
+        HttpEntity<MultiValueMap<String, String>> contentRequest = new HttpEntity<>(requestBodyMap, headers);
+
+        ResponseEntity<Resource> contentResponse = restTemplate.exchange(location, HttpMethod.GET, contentRequest, Resource.class);
+
+        InputStream responseInputStream;
+
+        try {
+
+            responseInputStream = contentResponse.getBody().getInputStream();
+            ProviderDataMangoCallRecord record = new ProviderDataMangoCallRecord();
+            byte[] data = IOUtils.toByteArray(responseInputStream);
+            record.setContentType(contentResponse.getHeaders().getFirst("Content-Type"));
+            record.setData(data);
+
+            providerDataMangoCallRepository.save(record);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Map<String, Object> unserializeDataField(String dataString) {
+
         MangoStatResponseMessage resultData = null;
         Map<String, Object> unserialized = new HashMap<>();
 

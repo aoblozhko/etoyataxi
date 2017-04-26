@@ -41,19 +41,23 @@ public class ProviderUpdateService {
     public void updateProviderData() {
         List<Provider> enabledProviders = providerRepository.findByEnabled(true);
         for (Provider provider : enabledProviders) {
-            IDataProviderService providerDriver = (IDataProviderService) applicationContext.getBean(provider.getDriverBean());
-            Map<Long, String> data = providerDriver.fetchData();
-            if (data != null) {
-                for (long millis : data.keySet()) {
-                    ProviderData providerData = new ProviderData();
-                    providerData.setDateTime(new DateTime(millis));
-                    String dataString = data.get(millis);
-                    if (! "null".equals(dataString)) {
-                        providerData.setData(dataString);
-                        providerData.setProvider(provider);
-                        providerDataRepository.save(providerData);
-                        provider.setLastUpdate(DateTime.now());
-                        providerRepository.save(provider);
+            long updateTimestamp = provider.getLastUpdate().getMillis() / 1000;
+            long nowTimestamp = DateTime.now().getMillis() / 1000;
+            if ((updateTimestamp + provider.getCheckInterval()) < nowTimestamp) { // time to update provider data
+                IDataProviderService providerDriver = (IDataProviderService) applicationContext.getBean(provider.getDriverBean());
+                Map<Long, String> data = providerDriver.fetchData();
+                if (data != null) {
+                    for (long millis : data.keySet()) {
+                        ProviderData providerData = new ProviderData();
+                        providerData.setDateTime(new DateTime(millis));
+                        String dataString = data.get(millis);
+                        if (dataString != null && !"null".equals(dataString)) {
+                            providerData.setData(dataString);
+                            providerData.setProvider(provider);
+                            providerDataRepository.save(providerData);
+                            provider.setLastUpdate(DateTime.now());
+                            providerRepository.save(provider);
+                        }
                     }
                 }
             }

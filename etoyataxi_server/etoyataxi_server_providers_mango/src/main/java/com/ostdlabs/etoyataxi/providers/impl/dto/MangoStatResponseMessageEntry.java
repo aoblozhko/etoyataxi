@@ -3,10 +3,14 @@ package com.ostdlabs.etoyataxi.providers.impl.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class MangoStatResponseMessageEntry {
 
-    private String records;
+    private List<String> records;
 
     private String start;
 
@@ -30,8 +34,10 @@ public class MangoStatResponseMessageEntry {
     public MangoStatResponseMessageEntry() {
     }
 
+
     public MangoStatResponseMessageEntry(String[] values) {
-        this.records = values[0];
+        List<String> recordIds = Arrays.asList(values[0].split(","));
+        this.records = recordIds;
         this.start = values[1];
         this.finish = values[2];
         this.fromExtension = values[3];
@@ -41,11 +47,11 @@ public class MangoStatResponseMessageEntry {
         this.disconnectReason = values[7];
     }
 
-    public String getRecords() {
+    public List<String> getRecords() {
         return records;
     }
 
-    public void setRecords(String records) {
+    public void setRecords(List<String> records) {
         this.records = records;
     }
 
