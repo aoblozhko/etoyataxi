@@ -21,6 +21,7 @@ import static com.ostdlabs.etoyataxi.Main.main;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 */
+/*
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = "classpath:serviceContext-test.xml")
@@ -28,7 +29,8 @@ public class AuthenticationServiceTest {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    @Test
+*/
+/*    @Test
     public void testToken() throws Exception {
 
         main(new String[] {});
@@ -43,6 +45,7 @@ public class AuthenticationServiceTest {
         ResponseEntity<EtoYaTaxiAuthResponse> statRequest = restTemplate.postForEntity("http://localhost:8083/services/auth/token",
                 request, EtoYaTaxiAuthResponse.class);
         //MatcherAssert.assertThat(tokenUtils.validateToken(token,result), is(false));
-    }
+    }*//*
 
-}
+
+}*/

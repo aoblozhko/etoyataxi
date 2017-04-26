@@ -1,0 +1,61 @@
+#!/bin/sh
+# postinst script for etoyataxi core api
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+
+        # Create user if it doesn't exist.
+        if ! id etoyataxi > /dev/null 2>&1 ; then
+            mkdir -p /var/run
+            adduser --system --no-create-home --disabled-password --disabled-login --group --home /var/run/etoyataxi etoyataxi
+        fi
+
+        SHARE_DIR=/usr/share/ostdlabs/etoyataxi
+
+        chown -R etoyataxi:etoyataxi $SHARE_DIR
+
+        # Make scripts runnable
+        chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/backup.sh
+        chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/delete_old_backup.sh
+        chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/dbmigration_alt.sh
+        chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/*
+        chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/*.jar
+
+        su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/dbmigration_alt.sh
+        su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/subscribe_to_score_update.sh
+        su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/update_unsubscribe_id.sh
+
+        chmod -R 700 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/conf
+
+        #sudo service ostdlabs-etoyataxi-api stop
+        #sudo service ostdlabs-etoyataxi-api start
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

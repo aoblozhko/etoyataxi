@@ -36,8 +36,6 @@ public class MangoStatResponseMessageEntry {
 
 
     public MangoStatResponseMessageEntry(String[] values) {
-        List<String> recordIds = Arrays.asList(values[0].split(","));
-        this.records = recordIds;
         this.start = values[1];
         this.finish = values[2];
         this.fromExtension = values[3];

@@ -1,0 +1,33 @@
+# ostdlabs-scorecompass-api
+
+description "ostdlabs-scorecompass-api"
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+pre-start script
+    # check exist log dir
+    if [ ! -d /var/log/ostdlabs/etoyataxi ]; then
+        mkdir -p /var/log/ostdlabs/etoyataxi
+        chown -R etoyataxi:etoyataxi /var/log/ostdlabs/etoyataxi
+        exit 0
+    fi
+end script
+
+script
+
+    ENV_TYPE="production"
+    if [ -f /etc/ostdlabs/environment.type ] ; then
+        ENV_TYPE=$(cat /etc/ostdlabs/environment.type)
+    fi
+
+    DEBUG_OPTS=""
+    if [ "$ENV_TYPE" != 'production' ]; then
+        DEBUG_OPTS="-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/var/log/ostdlabs/etoyataxi/api-gc.log -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=55011"
+    fi
+
+    JAVA_ARGS="-Xmx1024m -XX:MaxPermSize=256m -Duser.timezone=UTC -Dfile.encoding=UTF8 -Djava.net.preferIPv4Stack=true $DEBUG_OPTS -Dlogback.configurationFile=/usr/share/ostdlabs/etoyataxi/etoyataxi-api/conf/logback.xml"
+    API_JAR=$(ls /usr/share/ostdlabs/etoyataxi/etoyataxi-api | grep scorecompass_api_rest)
+    sudo -uetoyataxi java $JAVA_ARGS -jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/$API_JAR >> /var/log/ostdlabs/etoyataxi/api.log 2>&1
+
+end script

@@ -78,24 +78,6 @@ public class User implements Serializable {
     @Column(nullable = true)
     private Timestamp credentialsExpiredAt;
 
-    private int balance = 0;
-
-    private int balanceBonus = 0;
-
-    private int balanceTotal = 0;
-
-    @Column(nullable = true)
-    private Timestamp lastPayment;
-
-    @Column(nullable = true)
-    private String site;
-
-    @Column(nullable = true)
-    private String phone;
-
-    @Column(nullable = true)
-    private String company;
-
     @Column(nullable = true)
     private String name;
 
@@ -250,52 +232,20 @@ public class User implements Serializable {
         this.credentialsExpiredAt = credentialsExpiredAt;
     }
 
-/*    public Set<Banner> getBanners() {
-        return banners;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setBanners(Set<Banner> banners) {
-        this.banners = banners;
-    }*/
-
-    public int getBalance() {
-        return balance;
+    public Boolean getLocked() {
+        return locked;
     }
 
-    public void setBalance(int balance) {
-        this.balance = balance;
+    public Boolean getExpired() {
+        return expired;
     }
 
-    public Timestamp getLastPayment() {
-        return lastPayment;
-    }
-
-    public void setLastPayment(Timestamp lastPayment) {
-        this.lastPayment = lastPayment;
-    }
-
-    public String getSite() {
-        return site;
-    }
-
-    public void setSite(String site) {
-        this.site = site;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
+    public Boolean getCredentialsExpired() {
+        return credentialsExpired;
     }
 
     public String getName() {
@@ -306,21 +256,6 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public int getBalanceBonus() {
-        return balanceBonus;
-    }
-
-    public void setBalanceBonus(int balanceBonus) {
-        this.balanceBonus = balanceBonus;
-    }
-
-    public int getBalanceTotal() {
-        return balanceTotal;
-    }
-
-    public void setBalanceTotal(int balanceTotal) {
-        this.balanceTotal = balanceTotal;
-    }
 
     @Override
     public String toString() {

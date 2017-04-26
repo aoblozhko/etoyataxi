@@ -19,7 +19,7 @@
                 <property name="database" value="HSQL"/>
             </bean>
         </property>
-        <property name="persistenceUnitName" value="etoyataxi.persistance.plain"/>
+        <property name="persistenceUnitName" value="etoyataxi.persistance.plaintest"/>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>

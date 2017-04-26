@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+
+# Add here any variable or target overrides you need.
+PACKAGE := $(DEB_SOURCE_PACKAGE)
+
+DEB_DH_INSTALLINIT_ARGS := --no-start
+
+build:
+	echo "build section of rules"
+	mkdir -p temp/unpacked
+	mkdir -p temp/unpacked_rest
+	curl -uscorecompass:0f52b885ea -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=releases&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_rest&v=LATEST"
+	curl -uscorecompass:0f52b885ea -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=releases&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_service&v=LATEST"
+	curl -uscorecompass:0f52b885ea -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=releases&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_domain&v=LATEST"
+	mv *.jar temp
+	unzip -d temp/unpacked temp/etoyataxi_server_domain*.jar
+	unzip -d temp/unpacked_rest temp/etoyataxi_server_rest*.jar
+
+clean::
+	echo "clean section of rules"
