@@ -74,6 +74,13 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--Junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -190,15 +197,10 @@
 
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
-            <artifactId>etoyataxi_server_providers_mango_domain</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_providers_mango</artifactId>
             <version>0.0.1</version>
         </dependency>
 
     </dependencies>
+
 </project>

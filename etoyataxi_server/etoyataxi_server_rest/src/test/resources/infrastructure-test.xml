@@ -22,8 +22,8 @@
         <property name="persistenceUnitName" value="etoyataxi.persistance.plaintest"/>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="com.ostdlabs.etoyataxi.hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="com.ostdlabs.etoyataxi.hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="show_sql">${show_sql}</prop>
             </props>
         </property>
