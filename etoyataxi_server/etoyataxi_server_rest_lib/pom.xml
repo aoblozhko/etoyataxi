@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.ostdlabs.etoyataxi</groupId>
         <artifactId>etoyataxi_server</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>etoyataxi_server_rest_lib</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <description>This is ugly solution to aggregate all libs in one place easily</description>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_api_rest</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -30,7 +30,7 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <packagingExcludes>WEB-INF/lib/etoyataxi_api*.jar</packagingExcludes>
+                    <packagingExcludes>WEB-INF/lib/etoyataxi_server*.jar</packagingExcludes>
                 </configuration>
             </plugin>
         </plugins>

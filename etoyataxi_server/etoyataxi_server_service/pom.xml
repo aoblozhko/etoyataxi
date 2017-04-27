@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.ostdlabs.etoyataxi</groupId>
         <artifactId>etoyataxi_server</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>etoyataxi_server_service</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <properties>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_domain</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -186,19 +186,19 @@
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_providers_base</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_providers_rbt</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ostdlabs.etoyataxi</groupId>
             <artifactId>etoyataxi_server_providers_mango</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

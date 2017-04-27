@@ -1,3 +1,10 @@
 .idea
 *.iml
 target
+etoyataxi_debian/etoyataxi_api_unstable/temp
+etoyataxi_debian/etoyataxi_api_unstable/debian/ostdlabs-etoyataxi-api/
+etoyataxi_debian/etoyataxi_api_unstable/debian/files
+etoyataxi_debian/etoyataxi_api_unstable/debian/ostdlabs-etoyataxi-api.debhelper.log
+etoyataxi_debian/etoyataxi_api_unstable/debian/ostdlabs-etoyataxi-api.substvars
+etoyataxi_debian/etoyataxi_api_unstable/debian/ostdlabs-etoyataxi-api.postinst.debhelper
+etoyataxi_debian/etoyataxi_api_unstable/debian/ostdlabs-etoyataxi-api.postrm.debhelper

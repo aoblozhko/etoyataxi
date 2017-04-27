@@ -3,13 +3,13 @@
 
     <groupId>com.ostdlabs.etoyataxi</groupId>
     <artifactId>etoyataxi_api</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Eto Ya Taxi</name>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@github.com/etoyataxi-api.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/ostdlabs/etoyataxi</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -18,28 +18,25 @@
     </modules>
 
     <distributionManagement>
-<!--        <repository>
+        <repository>
             <id>ostdlabs.releases</id>
             <url>http://nexus.ostdlabs.com/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>ostdlabs.snapshots</id>
-            <url>http://nexus.ostdlabs.com/content/repositories/snapshots</url>
+            <url>http://nexus.ostdlabs.com/content/repositories/snapshots/</url>
             <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>-->
+        </snapshotRepository>
     </distributionManagement>
 
     <pluginRepositories>
-<!--
         <pluginRepository>
             <id>ostdlabs.nexus.public</id>
             <url>http://nexus.ostdlabs.com/content/repositories/public</url>
         </pluginRepository>
--->
     </pluginRepositories>
 
     <repositories>
-<!--
         <repository>
             <id>ostdlabs.nexus.releases</id>
             <url>http://nexus.ostdlabs.com/content/repositories/releases/</url>
@@ -52,8 +49,6 @@
             <releases><enabled>false</enabled></releases>
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
--->
-
         <repository>
             <id>spring.snapshots</id>
             <name>Spring Snapshot Repository</name>
@@ -65,7 +60,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
         <repository>
             <id>alfresco</id>
             <name>Alfresco Public Repository</name>
@@ -77,7 +71,6 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-
     </repositories>
 
     <build>
@@ -112,6 +105,36 @@
         </plugins>
     </build>
 
+     <profiles>
+         <profile>
+             <id>ostdlabs-release</id>
+             <distributionManagement>
+             </distributionManagement>
+
+             <repositories>
+<!--                 <repository>
+                     <id>ostdlabs.nexus.releases</id>
+                     <url>http://nexus.ostdlabs.com/content/repositories/releases/</url>
+                     <releases>
+                         <enabled>true</enabled>
+                     </releases>
+                     <snapshots>
+                         <enabled>false</enabled>
+                     </snapshots>
+                 </repository>-->
+                 <repository>
+                     <id>ostdlabs.nexus.snapshots</id>
+                     <url>http://nexus.ostdlabs.com/content/repositories/snapshots/</url>
+                     <releases>
+                         <enabled>false</enabled>
+                     </releases>
+                     <snapshots>
+                         <enabled>true</enabled>
+                     </snapshots>
+                 </repository>
+             </repositories>
+         </profile>
+     </profiles>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

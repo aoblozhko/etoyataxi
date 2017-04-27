@@ -1,7 +1,9 @@
 temp/etoyataxi_server_rest-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api
 temp/etoyataxi_server_service-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/lib
 temp/etoyataxi_server_domain-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/lib
+temp/etoyataxi_server_providers_base-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/lib
+temp/etoyataxi_server_providers_mango-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/lib
+temp/etoyataxi_server_providers_rbt-*.jar /usr/share/ostdlabs/etoyataxi/etoyataxi-api/lib
 temp/unpacked/install /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql
 temp/unpacked/control /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql
 temp/unpacked/migration /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql
-temp/unpacked/helpers /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql

@@ -11,11 +11,11 @@
     <parent>
         <groupId>com.ostdlabs.etoyataxi</groupId>
         <artifactId>etoyataxi_api</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>etoyataxi_server</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

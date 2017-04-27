@@ -27,7 +27,6 @@ public class ProviderServiceTest {
     @Autowired
     ProviderService providerService;
 
-
     @Test
     public void testUnserializeDataField() throws Exception {
         Map<String, Object> data = providerService.unserializeDataField("rbt",

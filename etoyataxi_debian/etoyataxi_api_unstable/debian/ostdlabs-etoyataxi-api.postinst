@@ -40,8 +40,6 @@ case "$1" in
         chmod 755 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/*.jar
 
         su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/dbmigration_alt.sh
-        su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/subscribe_to_score_update.sh
-        su etoyataxi -s /bin/bash -c /usr/share/ostdlabs/etoyataxi/etoyataxi-api/sql/control/update_unsubscribe_id.sh
 
         chmod -R 700 /usr/share/ostdlabs/etoyataxi/etoyataxi-api/conf
 

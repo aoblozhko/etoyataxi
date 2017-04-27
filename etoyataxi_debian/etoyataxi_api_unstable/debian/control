@@ -1,11 +1,11 @@
 Source: ostdlabs-etoyataxi-api
 Section: misc
 Priority: extra
-Maintainer: Etoyataxi Team <etoyataxi@ostdlabs.com>
-Build-Depends: cdbs, debhelper (>= 7.0.50~), openssl
+Maintainer: EtoyaTaxi Team <etoyataxi@ostdlabs.com>
+Build-Depends: cdbs, debhelper (>= 7.0.50~)
 
 
 Package: ostdlabs-etoyataxi-api
 Architecture: all
 Description: ostdlabs-etoyataxi-api
-Depends: postgresql-client-9.4, logrotate
+Depends: postgresql-client-9.4

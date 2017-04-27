@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+
+# Add here any variable or target overrides you need.
+PACKAGE := $(DEB_SOURCE_PACKAGE)
+
+DEB_DH_INSTALLINIT_ARGS := --no-start
+
+build:
+	echo "build section of rules"
+	mkdir -p temp/unpacked
+	mkdir -p temp/unpacked_rest
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_rest&v=LATEST"
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_service&v=LATEST"
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_domain&v=LATEST"
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_providers_base&v=LATEST"
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_providers_rbt&v=LATEST"
+	curl -uetoyataxi:1v7su3b5w2 -O -J -L "http://nexus.ostdlabs.com/service/local/artifact/maven/content?r=snapshots&g=com.ostdlabs.etoyataxi&a=etoyataxi_server_providers_mango&v=LATEST"
+	mv *.jar temp
+	unzip -d temp/unpacked temp/etoyataxi_server_domain*.jar
+	unzip -d temp/unpacked_rest temp/etoyataxi_server_rest*.jar
+
+clean::
+	echo "clean section of rules"
